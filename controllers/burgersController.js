@@ -1,5 +1,6 @@
 var express = require("express");
 var burger = require("../models/burger.js")
+var mysql = require("mysql")
 
 var router = express.Router();
 
@@ -35,7 +36,7 @@ router.put('/api/burger/:id', function(req, res) {
     if (data.changedRows === 0) {
       return res.status(404).end();
     } else {
-      res.status(200).end();  
+      res.status(200).end();
     }
   });
 });
@@ -53,5 +54,15 @@ router.delete("/api/burger/:id", function(req, res) {
   });
 });
 
+if (process.env.JAWSDB_URL) {
+  connection = mysql.createConnection(process.env.JAWSDB_URL);
+} else {
+  connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'hacktheplanet',
+    database: 'todoagain_db'
+  });
+};
 
 module.exports = (router);
